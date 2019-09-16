@@ -1,0 +1,20 @@
+a:link a:visited a:active a {
+  color: rgb(0,0,0);
+}
+
+a:hover {
+  text-decoration: none;
+  color: rgb(60,60,60);
+}
+
+.centerText {
+  display: block;
+  text-align: center;
+}
+
+.center {
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
