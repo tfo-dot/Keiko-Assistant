@@ -7,7 +7,7 @@ class StringReader {
     getText() { return this.text; }
     getCursor() { return this.cursor; }
 
-    getRemaing() { return this.text.substring(this.cursor)}
+    getRemaing() { return this.text.substring(this.cursor) }
 
     moveByInt(num = 1) { this.cursor += num; }
     moveByText(text) { this.cursor += text.length; }
@@ -37,14 +37,10 @@ class StringReader {
                 this.cursor++;
                 let start = this.cursor;
                 this.moveByInt();
-                while (this.canRead() && this.peek() != '"') {
-                    this.moveByInt();
-                }
+                while (this.canRead() && this.peek() != '"') this.moveByInt();
                 this.moveByInt();
                 return this.text.substring(start, this.cursor - 1);
-            } else {
-                return '';
-            }
+            } else return '';
         }
     }
 
@@ -54,7 +50,7 @@ class StringReader {
             ch == '4' || ch == '5' ||
             ch == '6' || ch == '7' ||
             ch == '8' || ch == '9' ||
-            ch == '-';
+            ch == '-' || ch == '+';
     }
 
     isAllowedInPoint(ch) { return this.isAllowedInInt(ch) || ch == '.'; }
@@ -71,6 +67,13 @@ class StringReader {
         let start = this.cursor;
         while (this.canRead() && this.isAllowedInPoint(this.peek())) this.moveByInt();
         return parseFloat(this.text.substring(start, this.cursor));
+    }
+
+    readBool() {
+        let parsing = this.readWord();
+        if (parsing == 'false') return false;
+        if (parsing == 'true') return true;
+        return undefined;
     }
 }
 
