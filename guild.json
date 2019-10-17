@@ -1,0 +1,19 @@
+{
+    "615535932988456970": {
+        "verify": {
+            "enabled": false,
+            "roleID": "616736842905157645"
+        },
+        "event": {
+            "join": {
+                "enabled": false,
+                "role": null,
+                "message": null
+            },
+            "leave": {
+                "enabled": false,
+                "message": null
+            }
+        }
+    }
+}
