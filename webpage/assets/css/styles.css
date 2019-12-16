@@ -2,6 +2,13 @@ a:link a:visited a:active a {
   color: rgb(0,0,0);
 }
 
+pre {
+  color: white;
+  width: max-content;
+  padding: 0px 10px;
+  margin-bottom: 0;
+}
+
 a:hover {
   text-decoration: none;
   color: rgb(60,60,60);
@@ -16,5 +23,15 @@ a:hover {
   position: relative;
   left: 50%;
   transform: translateX(-50%);
+}
+
+.example {
+  list-style-type: none;
+  background-color: #2f3136;
+  padding: 10px;
+  color: #ffffff;
+  margin: 5px;
+  width: max-content;
+  height: max-content;
 }
 

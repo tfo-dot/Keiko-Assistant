@@ -7,11 +7,15 @@ module.exports = {
     aliases: [],
     status: 'on',
     execute: async (Keiko, msg) => {
-        let embed = new Keiko.Discord.RichEmbed().setTitle('No siemka');
-        if (!msg.mentions.users.first()) embed.addField(msg.author.tag, `[Zobacz tutaj](${msg.author.avatarURL})`)
-            .setImage(msg.author.avatarURL)
-        else embed.addField(msg.mentions.users.first().tag, `[Zobacz tutaj](${msg.mentions.users.first().avatarURL})`)
-            .setImage(msg.mentions.users.first().avatarURL)
+        let embed = new Keiko.Discord.RichEmbed().setTitle('No siemka'), user;
+        if (!msg.mentions.users.first()) {
+            let id = Keiko.interpenter.readWord();
+            if (id) {
+                user = await Keiko.fetchUser(id);
+                Keiko.interpenter.moveByInt(-id.length);
+            } else user = msg.author;
+        } else user = msg.mentions.users.first();
+        embed.addField(user.tag, `[Zobacz tutaj](${user.avatarURL})`).setImage(user.avatarURL)
         msg.channel.send(embed)
         return;
     }

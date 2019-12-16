@@ -8,14 +8,17 @@ module.exports = {
     aliases: [],
     execute: async (Keiko, msg) => {
         let name = Keiko.interpenter.readWord(), canvas, user, tekst;
-        if (name == 'tvp') tekst = Keiko.interpenter.getRemaing().toUpperCase();
-        if (!msg.mentions.users.first()) {
-            let id = Keiko.interpenter.readWord();
-            if (id) {
-                user = await Keiko.fetchUser(id);
-                Keiko.interpenter.moveByInt(-id.length);
-            } else user = msg.author;
-        } else user = msg.mentions.users.first();
+        if (name == 'tvp') {
+            tekst = Keiko.interpenter.getRemaing().toUpperCase();
+        } else {
+            if (!msg.mentions.users.first()) {
+                let id = Keiko.interpenter.readWord();
+                if (id) {
+                    user = await Keiko.fetchUser(id);
+                    Keiko.interpenter.moveByInt(-id.length);
+                } else user = msg.author;
+            } else user = msg.mentions.users.first();
+        }
         switch (name) {
             case 'no-bully':
                 canvas = Canvas.createCanvas(640, 360);
@@ -68,7 +71,7 @@ module.exports = {
                 msg.channel.send(attachment);
                 return;
             default:
-                msg.channel.send(`Dostępne wzory: \n> - no-bully \n> - chocolate\n> - triggered\n> - tvp "<text>"\n> - frame <Dodaj obrazek>`);
+                msg.channel.send(`Dostępne wzory: \n> - no-bully \n> - chocolate\n> - triggered\n> - tvp <text>\n> - frame <Dodaj obrazek>`);
                 return;
         }
 
