@@ -1,0 +1,81 @@
+const fs = require('fs'), StringReader = require('../stringReader.js'), Canvas = require('canvas'),
+    https = require('https'), httpService = require('../httpService.js'), GIFEncoder = require('gifencoder'),
+    dataManager = require('./../utils/dataManager.js')
+
+let safeEval = require('safe-eval')
+let fibonacciTab = []; fibonacciTab["0"] = 0; fibonacciTab["1"] = 1;
+
+module.exports = {
+    name: 'math',
+    description: 'Pokazuje ciekawe matematyczne zadania!',
+    status: 'on',
+    aliases: [],
+    package: "default",
+    execute: async (Keiko, msg) => {
+        let command = Keiko.interpenter.readWord(), sub = [];
+        switch (command) {
+            case 'fibonacci':
+                sub.push(Math.abs(Keiko.interpenter.readInt()) + 1)
+                if (!sub[0]) {
+                    msg.channel.send('Podaj miejsce w ciągu które mam pokazać!')
+                    return;
+                }
+                let calcedFibonacci = fibonacci(sub[0])
+                if (calcedFibonacci == Infinity) {
+                    msg.channel.send(`Miejsce ${sub[0] - 1}, w ciągu fibonacciego jest dla mnie za duża ;-;\nAle mogę ci powiedzieć że jest większa od 1.797693134862315E+308`)
+                } else msg.channel.send(`Miejsce ${sub[0] - 1}, w ciągu fibonacciego ma wartość ${fibonacci(sub[0])}`)
+                break;
+            case 'dzielniki':
+                sub.push(Math.abs(Keiko.interpenter.readInt()))
+                if (!sub[0]) {
+                    msg.channel.send('Z czego ja mam dzielniki pokazać? Hmmm?')
+                    return;
+                }
+                msg.channel.send(new Keiko.Discord.RichEmbed().setTitle('Dzielniczki').addField(`Liczba: ${sub[0]}`, dzielniki(sub[0])))
+                break;
+            case 'round':
+                sub.push(Math.abs(Keiko.interpenter.readPoint()))
+                if (!sub[0]) {
+                    msg.channel.send('Jeszcze nie zgłupiałam na tyle żeby 0 zaokrąglić...!')
+                    return;
+                }
+                let rup = Math.round(sub[0]), rdown = Math.floor(sub[1])
+                msg.channel.send(`Liczba \`${sub[0]}\`, zaokrąglona w góre daje \`${rup}\`. Natomiast w dół \`${rdown}\``)
+            case 'calc':
+                sub.push(Keiko.interpenter.getRemaing())
+                if (!sub[0]) {
+                    msg.channel.send('Wiesz... Ale co ja ci mam wyliczyć? Podaj mi działanie!')
+                    return;
+                }
+                msg.channel.send(new Keiko.Discord.RichEmbed().setTitle('Output komendy `math calc`').addField('Działanie:', sub[0])
+                    .addField('Wynik:', safeEval(sub[0])))
+                break;
+            default:
+                msg.channel.send(new Keiko.Discord.RichEmbed().setTitle('Opcje komendy `math`').addField('Dostępne:',
+                    `> fibonacci <miejsce> - Oblicza miejsce w ciagu fibonacciego!
+                > dzielniki <liczba> - Pokazuje wszystkie dzielniki liczby!
+                > round <liczba> - Zaokrąglam liczbę!
+                > calc <działanie> - Obliczam zadane działanie!`))
+        }
+    }
+}
+
+function fibonacci(num) {
+    if (num == 0 || num == 1) return fibonacciTab[`${num}`]
+    else {
+        if (!fibonacciTab[`${num}`]) {
+            fibonacciTab[`${num}`] = fibonacci(num - 1) + fibonacci(num - 2)
+            return fibonacciTab[`${num}`];
+        } else {
+            return fibonacciTab[`${num}`];
+        }
+    }
+}
+
+function dzielniki(num) {
+    arr = []
+    for (let i = 1; i <= num; i++) {
+        if (num % i == 0) arr.push(i)
+    }
+    return arr.join(' ')
+}

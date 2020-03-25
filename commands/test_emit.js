@@ -11,6 +11,9 @@ module.exports = {
                 case 'guildMemberAdd':
                     addArgs.push(msg.member)
                     break;
+                case 'guildMemberRemove':
+                    addArgs.push(msg.member)
+                    break;
             }
             Keiko.emit(event, ...addArgs)
         }

@@ -11,9 +11,30 @@
     <link rel="stylesheet" href="assets/css/Login-Form-Clean.css">
     <link rel="stylesheet" href="assets/css/Navigation-with-Button.css">
     <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/Team-Boxed.css">
+    <link rel="stylesheet" href="assets/css/Team-Grid.css">
 </head>
 
 <body>
+    <nav class="navbar navbar-light navbar-expand-md navigation-clean-button">
+        <div class="container"><img src="assets/img/keiko-cropped.jpg" style="margin-right: 10px;"><a
+                class="navbar-brand" href="/">Keiko</a><button data-toggle="collapse" class="navbar-toggler"
+                data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span
+                    class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navcol-1">
+                <ul class="nav navbar-nav mr-auto">
+                    <li class="nav-item" role="presentation"><a class="nav-link active" href="parts">PartS</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link active" href="vars">Vars</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link active" href="about">Informacje</a></li>
+                </ul><span class="float-right navbar-text actions" id="loginSignUp"> <a
+                        class="btn btn-light action-button" role="button" href="login"
+                        style="margin-right: 5px;">Zaloguj się</a><a class="btn btn-light action-button" role="button"
+                        href="register" style="margin-left: 5px;">Zarejestruj się</a></span>
+                <a id="logUserName" href="#" style="visibility: hidden;position: fixed;"><img id="logUserImg"
+                        style="margin-right: 10px;width: 50px;height: 50px;">Username</a>
+            </div>
+        </div>
+    </nav>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 </body>

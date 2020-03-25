@@ -6,6 +6,7 @@ module.exports = {
     description: 'Weyfikuje użytkownika',
     status: 'on',
     aliases: [],
+    package: "default",
     execute: async (Keiko, msg) => {
         let settings = Keiko.settings;
         if(settings.verify) {
