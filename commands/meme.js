@@ -6,6 +6,7 @@ module.exports = {
     description: 'Tworzy mem na podstawie tekstu, obrazka',
     status: 'on',
     aliases: [],
+    package: "default",
     execute: async (Keiko, msg) => {
         let name = Keiko.interpenter.readWord(), canvas, user, tekst;
         if (name == 'tvp') {

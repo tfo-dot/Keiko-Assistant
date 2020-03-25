@@ -7,6 +7,7 @@ module.exports = {
     description: 'Zmienia ustawienia dotyczące serwera',
     status: 'on',
     aliases: [],
+    package: "Admin",
     execute: async (Keiko, msg) => {
         let groups = new GrDataManager().getData(msg.guild.id) || {}, perms = new PDataManager().getData(msg.author.id) || {}, sub = [], uPerms, interpenter = Keiko.interpenter;
         let groupsArray = Object.keys(groups);

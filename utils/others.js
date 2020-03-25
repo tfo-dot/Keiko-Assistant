@@ -1,8 +1,8 @@
-let permTab = [['keiko'], ['manage', '*', 'cc'], ['groups', 'perms', '*']]
+let permTab = [['keiko'], ['manage', '*', 'cc', 'card', 'messages'], ['groups', 'perms', 'money', '*', 'send', 'delete']]
 
 module.exports = {
     hasPerm: (perms, groups, member, permission) => {
-        let permAlone = permGroup = false
+        let permAlone = permGroup = false, guildDeny = true;
         if (perms && groups) {
             let permissionArr = permission.split('.')
             for (let i = 0; i < permissionArr.length; i++) {
@@ -16,6 +16,14 @@ module.exports = {
                 }
             }
             let userGroups = groups.filter(elt => (perms.groups.indexOf(elt.name) != -1)), groupsPerms = [];
+            groups.forEach(elt => {
+                elt.roles.forEach(elt1 => {
+                    [...member.roles.values()].forEach(elt2 => {
+                        if (elt2.id == elt1) userGroups.push(elt)
+                    });
+                })
+            })
+            userGroups = [...new Set(userGroups)];
             for (let i = 0; i < userGroups.length; i++) groupsPerms.push(userGroups[i].perms)
             for (let i = 0; i < groupsPerms.length; i++) {
                 for (let j = 0; i < permissionArr.length; i++) {
@@ -30,7 +38,7 @@ module.exports = {
                 }
             }
         }
-        return permAlone || permGroup || member.guild.ownerID == member.id;
+        return ((permAlone || permGroup) && guildDeny) || member.guild.ownerID == member.id;
     },
     flatten: (arr) => {
         const result = []

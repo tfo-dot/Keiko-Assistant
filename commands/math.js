@@ -10,6 +10,7 @@ module.exports = {
     description: 'Pokazuje ciekawe matematyczne zadania!',
     status: 'on',
     aliases: [],
+    package: "default",
     execute: async (Keiko, msg) => {
         let command = Keiko.interpenter.readWord(), sub = [];
         switch (command) {

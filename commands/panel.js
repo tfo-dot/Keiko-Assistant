@@ -6,6 +6,7 @@ module.exports = {
     description: 'Pokazuje ci twój własny panel! Który możesz dostować na stronie lub na discordzie',
     status: 'on',
     aliases: [],
+    package: "default",
     execute: async (Keiko, msg) => {
         Keiko.interpenter.skipSpaces()
         let interpenter = Keiko.interpenter, usettings = new UDataManager();

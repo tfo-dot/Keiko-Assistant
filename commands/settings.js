@@ -7,7 +7,26 @@ module.exports = {
     description: 'Zmienia ustawienia dotyczące serwera',
     status: 'on',
     aliases: [],
+    package: "Admin",
     execute: async (Keiko, msg) => {
+        let helpWord = Keiko.interpenter.readWord()
+        if (helpWord == "help") {
+            msg.channel.send(new Keiko.Discord.RichEmbed().setTitle("No siemka, tu Keiko")
+                .addField("Użycie komendy:", "`keiko!settings`")
+                .addField("Ogólny opis:", "Zmieniam ustawienia dotyczące serwera")
+                .addField("Dodatkowe informacje:",
+                    "Jeśli chcesz zobaczyć domyślne ustawienia danej gałęzi nic nie wpisuj. Jeśli natomiast chcesz zobaczyć pomoc odnośnie komendy to musisz za nią dopisać `help`. W gałązce mods nie ma takiej podkomendy jak help, jeśli nie wpiszesz nic automatycznie pokażę ci role. Jeśli oznaczysz role ustawie je jako role moderacyjne.")
+                .addField("Permisje:", "Aby użyć tej komendy potrzebujesz permisji `keiko.manage.settings`")
+                .addField("Dostępne podkomendy:",
+                    `- verify - Weryfikacja użytkowników na serwerze
+                - event - Wydarzenia związane z serwerem (wejście nowego użytkownika)
+                - logs - Edycja i usuwanie wiadomości (Logi)
+                - parent - Wybierz kanał jaki ma być używany. Na podstawie jego kategorii użytkownicy mogą zajmować kanały
+                - mods - Wybierz role moderacyjną służącą między innymi do poprawnego skonfiguorawania uprawnień na zajmowanych kanałach
+                - packages - Wyłącz poszczególne komendy na serwerze za pomocą paczek`))
+            return;
+        }
+        if (helpWord) Keiko.interpenter.moveByInt(-helpWord.length);
         let settings = new GDataManager().getData(msg.guild.id), command = Keiko.interpenter.readWord(), sub = [];
         let groups = new GrDataManager().getData(msg.guild.id) || {}, perms = new PDataManager().getData(msg.author.id) || {}, uPerms;
         let groupsArray = Object.keys(groups);
@@ -18,7 +37,8 @@ module.exports = {
             return;
         }
         if (!settings) settings = {
-            verify: { enabled: false, roleID: null },
+            verify: { enabled: false, role: null }, parent: [],
+            mods: [],
             event: {
                 join: { enabled: false, role: null, message: null, channel: null },
                 leave: { enabled: false, channel: null, message: null }
@@ -26,6 +46,9 @@ module.exports = {
             logs: {
                 edit: { enabled: false, channel: null },
                 delete: { enabled: false, channel: null }
+            },
+            packages: {
+                nsfw: true
             }
         }
         switch (command) {
@@ -48,8 +71,14 @@ module.exports = {
                             return;
                         }
                         msg.channel.send(`Zaktualizowałam role po weryfikacji na ${sub[1]}`)
-                        settings.verify.roleID = sub[1].id;
+                        settings.verify.role = sub[1].id;
                         break;
+                    case "help":
+                        msg.channel.send(new Keiko.Discord.RichEmbed("No siemka, tu Keiko!")
+                            .addField("Dostępne podkomendy:",
+                                `- enabled - Czy weryfikacja jest włączona?
+                        - role - Jaką role dać po domyślnej weryfikacji`))
+                        return;
                     default:
                         msg.channel.send(new Keiko.Discord.RichEmbed().setTitle('No siemaneczko ci')
                             .addField('Ustawienia dotyczące weryfikacji', `Włączone: ${settings.verify.enabled ? 'tak' : 'nie'}
@@ -79,7 +108,7 @@ module.exports = {
                             case 'role':
                                 sub.push(msg.mentions.roles.first());
                                 if (!sub[2]) {
-                                    if (sub[2] = Keiko.interpenter.readWord() == 'default') {
+                                    if ((sub[2] = Keiko.interpenter.readWord()) == 'default') {
                                         settings.event.join.role = null;
                                     } else {
                                         msg.channel.send(`No sorka ale musisz oznaczyć rolę! Możesz też wpisać \`default\` aby zresetować`)
@@ -87,7 +116,7 @@ module.exports = {
                                     }
 
                                 }
-                                settings.event.join.role = sub[2].id;
+                                if (sub[2] != 'default') settings.event.join.role = sub[2].id;
                                 msg.channel.send(`Zaktualizowałam role po wejściu na ${sub[2]}`)
 
                                 break;
@@ -109,7 +138,7 @@ module.exports = {
                             case 'channel':
                                 sub.push(msg.mentions.channels.first())
                                 if (!sub[2]) {
-                                    if (sub[2] = Keiko.interpenter.readWord() == 'default') {
+                                    if ((sub[2] = Keiko.interpenter.readWord()) == 'default') {
                                         settings.event.join.channel = null;
                                     } else {
                                         msg.channel.send(`No sorka ale musisz oznaczyć kanał! Możesz też wpisać \`default\` aby zresetować. Jeśli to zrobisz wiadomości nie będą wysyłane.`)
@@ -119,6 +148,12 @@ module.exports = {
                                 settings.event.join.channel = sub[2].id;
                                 msg.channel.send(`Zaktualizowałam kanał do wysyłania wiadomości powitalnych na ${sub[2]}`)
                                 break;
+                            case "help":
+                                msg.channel.send(new Keiko.Discord.RichEmbed("No siemka, tu Keiko!")
+                                    .addField("Dostępne podkomendy:"
+                                        `- enable - Czy  mam coś wysyłać po wejściu nowego użytkownika?
+                        - message - Wiadomość o jakiej treści mam tam wysłać?
+                        - channel - Na jaki kanał mam to wysłać`))
                             default:
                                 msg.channel.send(new Keiko.Discord.RichEmbed().setTitle('Hejka, tu Keiko!')
                                     .addField('Aktualne ustawienia dotyczącze wejść na serwer',
@@ -128,6 +163,7 @@ module.exports = {
                                 Kanał: ${settings.event.join.channel ? `<#${settings.event.join.channel}>` : 'Brak'}`))
                                 break;
                         }
+                        break;
                     case 'leave':
                         if (!settings.event.leave) settings.event.leave = { enabled: false, message: null, channel: null }
                         sub.push(Keiko.interpenter.readWord())
@@ -159,16 +195,23 @@ module.exports = {
                             case 'channel':
                                 sub.push(msg.mentions.channels.first())
                                 if (!sub[2]) {
-                                    if (sub[2] = Keiko.interpenter.readWord() == 'default') {
+                                    if ((sub[2] = Keiko.interpenter.readWord()) == 'default') {
                                         settings.event.leave.channel = null;
                                     } else {
                                         msg.channel.send(`No sorka ale musisz oznaczyć kanał! Możesz też wpisać \`default\` aby zresetować. Jeśli to zrobisz wiadomości nie będą wysyłane.`)
                                         return;
                                     }
                                 }
-                                settings.event.leave.channel = sub[2].id;
+                                if (sub[2] != 'default') settings.event.leave.channel = sub[2].id;
                                 msg.channel.send(`Zaktualizowałam kanał do wysyłania wiadomości pożegnalnych na ${sub[2]}`)
                                 break;
+                            case "help":
+                                msg.channel.send(new Keiko.Discord.RichEmbed("No siemka, tu Keiko!")
+                                    .addField("Dostępne podkomendy:"
+                                        `- enable - Czy  mam coś wysyłać po wyjściu użytkownika?
+                        - message - Wiadomość o jakiej treści mam tam wysłać?
+                        - channel - Na jaki kanał mam to wysłać`))
+                                return;
                             default:
                                 msg.channel.send(new Keiko.Discord.RichEmbed().setTitle('Hejka, tu Keiko!')
                                     .addField('Aktualne ustawienia dotyczącze wyjść z serwera',
@@ -178,6 +221,12 @@ module.exports = {
                                 break;
                         }
                         break;
+                    case "help":
+                        msg.channel.send(new Keiko.Discord.RichEmbed("No siemka, tu Keiko!")
+                            .addField("Dostępne podkomendy:",
+                                `- join - Co mam zrobić po wejściu nowego użytkownika?
+                        - leave - Co mam zrobić po wyjściu użytkownika?`))
+                        return;
                 }
                 break;
             case 'logs':
@@ -196,7 +245,6 @@ module.exports = {
                                 }
                                 settings.logs.edit.enabled = sub[2]
                                 msg.channel.send(`W${sub[2] ? "" : "y"}łączyłam wysyłanie wiadomości logowanie informacji przy edycji wiadomości!`)
-                                console.log(sub)
                                 break;
                             case 'channel':
                                 sub.push(msg.mentions.channels.first())
@@ -211,6 +259,12 @@ module.exports = {
                                 if (sub[2] != 'default') settings.logs.edit.channel = sub[2].id;
                                 msg.channel.send(`Zaktualizowałam kanał do wysyłania powiadomień o edycji wiadomości na ${sub[2]}`)
                                 break;
+                            case "help":
+                                msg.channel.send(new Keiko.Discord.RichEmbed().setTitle("No siemka, tu Keiko")
+                                    .addField("Dostępne podkomendy:",
+                                        `- enable - Czy mam aktywować tą funkcje?
+                                - channel - Gdzie mam wysłać wiadomość o tym że zedytował swoją wiadomość`))
+                                return;
                             default:
                                 msg.channel.send(new Keiko.Discord.RichEmbed().setTitle('Hejka, tu Keiko!')
                                     .addField('Aktualne ustawienia dotyczącze logowania edycji wiadomości',
@@ -244,6 +298,12 @@ module.exports = {
                                 if (sub[2] != 'default') settings.logs.delete.channel = sub[2].id;
                                 msg.channel.send(`Zaktualizowałam kanał do wysyłania powiadomień o usunięciu wiadomości na ${sub[2]}`)
                                 break;
+                            case "help":
+                                msg.channel.send(new Keiko.Discord.RichEmbed().setTitle("No siemka, tu Keiko")
+                                    .addField("Dostępne podkomendy:",
+                                        `- enable - Czy mam aktywować tą funkcje?
+                                - channel - Gdzie mam wysłać wiadomość kiedy ktoś zedytuje wiadomość`))
+                                return;
                             default:
                                 msg.channel.send(new Keiko.Discord.RichEmbed().setTitle('Hejka, tu Keiko!')
                                     .addField('Aktualne ustawienia dotyczącze logowania usuwania wiadomości',
@@ -251,9 +311,91 @@ module.exports = {
                             Kanał: ${settings.logs.delete.channel ? `<#${settings.logs.delete.channel}>` : 'Brak'}`))
                         }
                         break;
+                    case "help":
+                        msg.channel.send(new Keiko.Discord.RichEmbed().setTitle("No siemka, tu Keiko")
+                            .addField("Dostępne podkomendy:",
+                                `- edit - Logi o edytowaniu wiadomości
+                                - delete - Logi o usuwaniu wiadomości`))
+                        return;
                 }
+                break;
+            case 'parent':
+                if (!settings.parent) settings.parent = null;
+                sub.push(Keiko.interpenter.readWord());
+                switch (sub[0]) {
+                    case 'set':
+                        let baseArr = [...msg.mentions.channels.array()].map(elt => elt.parentID)
+                        sub[1] = Array.from(new Set(baseArr));
+                        let textArr = sub[1].reduce((sum, acc) => {
+                            return sum + `<#${acc}>, `
+                        }, '');
+                        if (sub[1].length < 1) {
+                            if ((sub[1] = Keiko.interpenter.readWord()) == 'default') {
+                                settings.parent = null;
+                            } else {
+                                msg.channel.send(`No sorka ale musisz oznaczyć kanał! Możesz też wpisać \`default\` aby zresetować. Jeśli to zrobisz wiadomości nie będą wysyłane.`)
+                                return;
+                            }
+                        }
+                        if (sub[1] != 'default') settings.parent = sub[1];
+                        msg.channel.send(`Zaktualizowałam kategorie na ${textArr}`)
+                        break;
+                    case "help":
+                        msg.channel.send(new Keiko.Discord.RichEmbed("No siemka, tu Keiko!")
+                            .addField("Dostępne podkomendy:",
+                                `- set - Wybierz odpowiednią kategorie poprzez oznaczenie kanału który się w niej znajduje gdzie użytkownicy będą mogli zaklepać kanał?`))
+                        return;
+                    default:
+                        msg.channel.send(new Keiko.Discord.RichEmbed().setTitle('Hejka, tu Keiko!')
+                            .addField('Aktualne ustawienia dotyczącze kategorii do klepania',
+                                `Kanał: ${settings.parent ? `<#${settings.parent}>` : 'Brak'}`))
+                }
+                break;
+            case 'mods':
+                if (!settings.mods) settings.mods = [];
+                sub.push(Keiko.interpenter.readWord());
+                let modArr = [...msg.mentions.roles.values()].map(elt => elt.id);
+                let modText = modArr.length > 0 ? modArr : settings.mods;
+                modText = modText.reduce((sum, acc) => {
+                    return sum + `<@&${acc}>, `
+                }, '')
+                if (!modArr.length > 0) {
+                    if ((sub[2] = Keiko.interpenter.readWord()) == 'default') {
+                        settings.mods = [];
+                    } else {
+                        msg.channel.send(new Keiko.Discord.RichEmbed().setTitle('Hejka, tu Keiko!')
+                            .addField('Aktualne ustawienia dotyczącze moderacji',
+                                `${modText.length > 0 ? modText : "Brak roli"}`))
+                        return;
+                    }
+                }
+                if (sub[2] != 'default') settings.mods = modArr;
+                msg.channel.send(`Zaktualizowałam role moderacyjne na ${modText}`)
+                break;
+            case "packages":
+                if (!settings.packages) settings.packages = { nsfw: true };
+                sub.push(Keiko.interpenter.readWord());
+                switch (sub[0]) {
+                    case 'nsfw':
+                        sub.push(Keiko.interpenter.readBool());
+                        if (sub[1] == undefined) {
+                            msg.channel.send("Co ty kombinujesz? Ta wartość nie może być pusta...");
+                            return;
+                        }
+                        settings.packages.nsfw = sub[1];
+                        msg.channel.send(`Pomyślnie ${sub[1] ? "odblokowałam" : "zablokowałam"} paczkę nsfw!`)
+                        break;
+                    default:
+                        msg.channel.send(new Keiko.Discord.RichEmbed().setTitle('Hejka, tu Keiko!')
+                            .addField('Aktualne ustawienia dotyczącze paczek',
+                                `NSFW: ${settings.packages.nsfw ? "odblokowane" : "zablokowane"}`));
+                        break;
+                }
+                break;
+            default:
+                msg.channel.send("Użyj proszę `keiko!settings help`")
         }
         new GDataManager().update(msg.guild.id, settings);
         return;
     }
-} 
+}

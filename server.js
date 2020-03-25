@@ -79,6 +79,10 @@ Keiko.on("ready", () => {
       name: member.displayName, tag: member.user.tag
     })
   })
+  //Keiko.setPresence()
+  let normal = { game: { name: "Yui", type: "watching" }, status: "online" };
+  let service = { game: { name: "jestem na przeglądzie...", type: "playing" }, status: "idle" };
+  Keiko.user.setPresence(service)
   app.listen(process.env.PORT);
 });
 
@@ -90,14 +94,15 @@ Keiko.on("message", async (msg) => {
     && !msg.author.bot || msg.content.startsWith('keiko!help')) {
     msg.channel.send(new Keiko.Discord.RichEmbed()
       .setTitle('Lista wszystkich komend! Prefix `keiko!`')
-      .addField('4fun', '`meme`')
-      .addField('Inne', '`panel`, `info`, `avatar`, `settings`, `cc`')
-      .addField('Administracyjne', '`groups`, `perms`'))
+      .addField('4fun', '`meme`, `card`, `math')
+      .addField('Inne', '`panel`, `info`, `avatar`, `cc`, `money`, `voting`')
+      .addField('Administracyjne', '`groups`, `perms`, `clear`, `settings`'))
+      .addField("Jeśli chcesz dowiedzieć się czegoś więcej:", "Wpisz help po danej komendzie")
     return;
   }
   if (!msg.content.startsWith(prefix.default)) return;
   Keiko.interpenter = new StringReader(msg.content.substring(prefix.default.length));
-  let command = Keiko.interpenter.readWord();
+  let command = Keiko.interpenter.readWord() || "niematakiejkomendyjasiu";
   if (Keiko.commands.has(command)) {
     try {
       if (Keiko.commands.get(command).status == 'off') {

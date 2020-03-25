@@ -7,6 +7,7 @@ module.exports = {
     description: 'Zmienia ustawienia dotyczące serwera',
     status: 'on',
     aliases: [],
+    package: "Admin",
     execute: async (Keiko, msg) => {
         let groups = new GrDataManager().getData(msg.guild.id) || {}, perms = new PDataManager().getData(msg.author.id) || {}, sub = [], uPerms;
         let groupsArray = Object.keys(groups)
@@ -28,24 +29,26 @@ module.exports = {
 }
 
 function getDefaultGroups() {
-    let arr = {};
-    arr['users'] = {
+    let arr = [];
+    arr.push({
         name: 'users',
         desc: 'Domyślna grupa, dodana przez Keiko!',
         position: 0,
+        roles: [],
         perms: {
             allow: [],
             deny: []
         }
-    }
-    arr['moderator'] = {
+    })
+    arr.push({
         name: 'moderator',
         desc: 'Domyślna grupa, dodana przez Keiko!',
         position: 0,
+        roles: [],
         perms: {
             allow: ['keiko.cc'],
             deny: []
         }
-    }
+    })
     return arr;
 }

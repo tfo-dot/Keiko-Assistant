@@ -8,15 +8,17 @@ module.exports = {
             if (data.logs.delete.enabled) {
                 if (data.logs.delete.channel) {
                     let channel = msg.guild.channels.find(channel => channel.id == data.logs.delete.channel);
-                    channel.send(new Discord.RichEmbed().setTitle('Hejka, tu Keiko!')
+                    let attachments = msg.attachments;
+                    let embed = new Discord.RichEmbed().setTitle('Hejka, tu Keiko!')
                         .addField('Coś się stało!', 'Usunięcie wiadomości', true)
-                        .addField('Gdzie?', msg.channel, true).addField('Autor wiadomości', msg.author, true)).then(() => {
-                            channel.send('Wiadomość:')
-                            wrap(msg.cleanContent, 1990).forEach(elt => { channel.send(`\`\`\`${elt}\`\`\``) });
-                        })
+                        .addField('Gdzie?', msg.channel, true).addField('Liczba załączników', msg.attachments.size).addField('Autor wiadomości', msg.author, true);
+                    wrap(msg.cleanContent.replace(/\n/g, "{ITS ENTER}"), 1024).forEach((elt, i) => {
+                        embed.addField("Część " + (i + 1), elt.replace(/{ITS ENTER}/g, "\n"))
+                    });
+                    await channel.send(embed)
                 }
             }
-        } catch (err) {}
+        } catch (err) { }
     }
 }
 

@@ -7,16 +7,28 @@ module.exports = {
     description: 'Zmienia ustawienia dotyczące serwera',
     status: 'on',
     aliases: [],
+    package: "Admin",
     execute: async (Keiko, msg) => {
+        let helpWord = Keiko.interpenter.readWord()
+        if (helpWord == "help") {
+            msg.channel.send(new Keiko.Discord.RichEmbed().setTitle("No siemka, tu Keiko")
+                .addField("Użycie komendy:", "`keiko!perms`")
+                .addField("Ogólny opis:", "Zarządzam uprawnieniami dla użytkowników")
+                .addField("Dodatkowe informacje:", "Jeśli nie ustawiłeś jeszcze uprawnień to tylko właściciel może je dawać, zmieniać. Jeżeli dasz komuś uprawnienie `keiko.*` otrzyma on wszystkie dostępne uprawnienia")
+                .addField("Permisje:", "Aby użyć tej komendy potrzebujesz permisji `keiko.manage.perms`"))
+            return;
+        }
+        if (helpWord) Keiko.interpenter.moveByInt(-helpWord.length)
         let groups = new GrDataManager().getData(msg.guild.id) || {}, perms = new PDataManager().getData(msg.author.id) || {}, sub = [], uPerms, interpenter = Keiko.interpenter;
         let groupsArray = Object.keys(groups);
         if (!perms[msg.guild.id]) { perms[msg.guild.id] = { groups: [], perms: { allow: [], deny: [] } } }
         uPerms = perms[msg.guild.id]
+        //+ grupy z rang
         if (!utils.hasPerm(uPerms, groupsArray, msg.member, 'keiko.manage.perms')) {
             msg.channel.send('Nie ma cię na liście uprawnionych! Albo jestem ślepa...')
             return;
         }
-        
+
         //pex user @mention add perm
         //pex user @mention list
         //pex user @metnion remove perm
@@ -63,6 +75,7 @@ module.exports = {
                 msg.channel.send(`Dodałam uprawnienie ${sub[1]}`)
                 break;
             case 'remove':
+                sub.push(interpenter.readWord());
                 let has = false, permId;
                 if ((permId = uPerms.perms.allow.indexOf(sub[1])) > -1) has = true;
                 if (!has) {
@@ -79,7 +92,7 @@ module.exports = {
                 let text = permArr.reduce((sum, acc) => sum + `**${acc}**|`, '');
                 let textArr = utils.wrap(text, 1024);
                 let embed = new Keiko.Discord.RichEmbed().setTitle('No hejka, tu Keiko!').addField('Użytkownik', mentionedUser);
-                if(textArr.length > 0) textArr.forEach(elt => { embed.addField('Permisje:', elt.replace(/\|/g, '\n')) });
+                if (textArr.length > 0) textArr.forEach(elt => { embed.addField('Permisje:', elt.replace(/\|/g, '\n')) });
                 else embed.addField('Permisje:', "Brak")
                 msg.channel.send(embed)
                 break;
