@@ -62,7 +62,7 @@ module.exports = {
                             for (let i = 0; i < msgs.length && msgCount < sub[0]; i++) {
                                 if (i == msgs.length - 1) lastMsgId = msgs[i].id;
                                 if (msgs[i].cleanContent.startsWith(sub[2])) {
-                                    await msgs[i].delete(100);
+                                    await msgs[i].delete(200);
                                     msgCount++;
                                 }
                             }
@@ -87,7 +87,7 @@ module.exports = {
                             for (let i = 0; i < msgs.length && msgCount < sub[0]; i++) {
                                 if (i == msgs.length - 1) lastMsgId = msgs[i].id;
                                 if (msgs[i].cleanContent.includes(sub[2])) {
-                                    await msgs[i].delete(100);
+                                    await msgs[i].delete(200);
                                     msgCount++;
                                 }
                             }
@@ -112,7 +112,7 @@ module.exports = {
                             for (let i = 0; i < msgs.length && msgCount < sub[0]; i++) {
                                 if (i == msgs.length - 1) lastMsgId = msgs[i].id;
                                 if (msgs[i].cleanContent.endsWith(sub[2])) {
-                                    await msgs[i].delete(100);
+                                    await msgs[i].delete(200);
                                     msgCount++;
                                 }
                             }
@@ -136,7 +136,7 @@ module.exports = {
                             for (let i = 0; i < msgs.length && msgCount < sub[0]; i++) {
                                 if (i == msgs.length - 1) lastMsgId = msgs[i].id;
                                 if (msgs[i].attachments.size > 0) {
-                                    await msgs[i].delete(100);
+                                    await msgs[i].delete(200);
                                     msgCount++;
                                 }
                             }
@@ -169,7 +169,7 @@ module.exports = {
                             for (let i = 0; i < msgs.length && msgCount < sub[0]; i++) {
                                 if (i == msgs.length - 1) lastMsgId = msgs[i].id;
                                 if (user.id == msgs[i].author.id) {
-                                    await msgs[i].delete(100);
+                                    await msgs[i].delete(200);
                                     msgCount++;
                                 }
                             }
@@ -192,7 +192,7 @@ module.exports = {
                             msgs = [...msgs.values()]
                             for (let i = 0; i < msgs.length && msgCount < sub[0]; i++) {
                                 if (i == msgs.length - 1) lastMsgId = msgs[i].id;
-                                await msgs[i].delete(100);
+                                await msgs[i].delete(200);
                                 msgCount++;
                             }
                           if(msgs.length == 0) {
@@ -201,6 +201,7 @@ module.exports = {
                         })
                     } while (msgCount < sub[0]);
             }
+            msg.channel.send(`Poprawnie usunięto ${msgCount - 1} wiadomości`)
         }
     }
 }
