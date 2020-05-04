@@ -25,7 +25,7 @@ module.exports = {
                     .then(collected => {
                         collected = collected.first()
                         let interpenter = new StringReader(collected.content);
-                        sub = [];
+                        let sub = [];
                         sub.push(interpenter.readWord())
                         collected.delete()
                         switch (sub[0]) {
@@ -73,7 +73,7 @@ module.exports = {
                                 addBlankField - Dodaje nowe puste pole
                                 setTitle "tytuł" - Tytuł "kartki"
                                 setDesc "opis" - Dodaje opis do "kartki"
-                                send #kanał - Wysyła "kartkę" na określony kanał`))
+                                send #kanał - Wysyła "kartkę" na określony kanał\ndone - kończy edycje`))
                                 break;
                         }
                     })

@@ -12,6 +12,7 @@ app.get("/profile", (_request, response) => { response.sendFile(__dirname + '/we
 setInterval(() => {
   https.get(`https://${process.env.PROJECT_DOMAIN}.glitch.me/`);
   https.get('https://yui-discord-bot.glitch.me/');
+  https.get('https://discord-inbase.glitch.me/ultramegawchujsecretdoodpaleniabota')
 }, 250000);
 
 //Discord
@@ -80,9 +81,9 @@ Keiko.on("ready", () => {
     })
   })
   //Keiko.setPresence()
-  let normal = { game: { name: "Yui", type: "watching" }, status: "online" };
+  let normal = { game: { name: "nowy projekt Indexed", type: "watching" }, status: "online" };
   let service = { game: { name: "jestem na przeglądzie...", type: "playing" }, status: "idle" };
-  Keiko.user.setPresence(service)
+  Keiko.user.setPresence(normal)
   app.listen(process.env.PORT);
 });
 
