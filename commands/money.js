@@ -136,8 +136,7 @@ module.exports = {
                 return;
             default:
                 embed.setTitle('Hejka tu Keiko!').addField('Poprawne gałązki to:',
-                    `> - info @użytkownik - Pokazuje informacje o stanie użytkownika jęsli chcesz sprawdzić swoje wpisz bez oznaczenia ;3
-                    > - manage <gałązki / help> - Zarządzanie kontem`)
+                    `> - info <@użytkownik> - Pokazuje informacje o stanie konta użytkownika (twoim stanie konta) ;3`)
                 if (utils.hasPerm(uPerms, groupsArray, msg.member, 'keiko.manage.money')) {
                     embed.addField('Gałązki Administracyjne',
                         `> - add-cash "<konto>" <kwota> @użytkownik - Dodaj pieniądze do konta gracza

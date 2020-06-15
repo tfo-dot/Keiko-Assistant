@@ -41,7 +41,7 @@ module.exports = {
                 }
                 let rup = Math.round(sub[0]), rdown = Math.floor(sub[1])
                 msg.channel.send(`Liczba \`${sub[0]}\`, zaokrąglona w góre daje \`${rup}\`. Natomiast w dół \`${rdown}\``)
-            case 'calc':
+            /*case 'calc':
                 sub.push(Keiko.interpenter.getRemaing())
                 if (!sub[0]) {
                     msg.channel.send('Wiesz... Ale co ja ci mam wyliczyć? Podaj mi działanie!')
@@ -49,13 +49,13 @@ module.exports = {
                 }
                 msg.channel.send(new Keiko.Discord.RichEmbed().setTitle('Output komendy `math calc`').addField('Działanie:', sub[0])
                     .addField('Wynik:', safeEval(sub[0])))
-                break;
+                break;*/
             default:
                 msg.channel.send(new Keiko.Discord.RichEmbed().setTitle('Opcje komendy `math`').addField('Dostępne:',
                     `> fibonacci <miejsce> - Oblicza miejsce w ciagu fibonacciego!
                 > dzielniki <liczba> - Pokazuje wszystkie dzielniki liczby!
-                > round <liczba> - Zaokrąglam liczbę!
-                > calc <działanie> - Obliczam zadane działanie!`))
+                > round <liczba> - Zaokrąglam liczbę!`))
+                //> calc <działanie> - Obliczam zadane działanie!`))
         }
     }
 }
