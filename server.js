@@ -1,14 +1,8 @@
 const express = require('express'), fs = require('fs'), StringReader = require('./stringReader.js'),
   Canvas = require('canvas'), https = require('https'), { UDataManager } = require('./utils/dataManager.js'),
-  httpService = require('./httpService.js');
+  httpService = require('./httpService.js'), server = require("./router.js"), data = require('./data.js');
 let app = express();
 
-//Page requests
-app.use(express.static('webpage'));
-app.get("/", (_request, response) => { response.sendFile(__dirname + '/webpage/main.html'); });
-app.get("/vars", (_request, response) => { response.sendFile(__dirname + '/webpage/vars.html'); });
-app.get("/about", (_request, response) => { response.sendFile(__dirname + '/webpage/about.html'); })
-app.get("/profile", (_request, response) => { response.sendFile(__dirname + '/webpage/guildprofile.html'); })
 setInterval(() => {
   https.get(`https://${process.env.PROJECT_DOMAIN}.glitch.me/`);
   https.get('https://yui-discord-bot.glitch.me/');
@@ -36,69 +30,36 @@ fs.readdirSync('./events').filter(file => file.endsWith('.js')).forEach(file => 
 
 Keiko.on("ready", () => {
   console.log("Started & synced");
-  app.get("/api/getprofile", async (request, response) => {
-    let uid = request.query.uid, guid = request.query.guid
-    let userData = new UDataManager().getData(uid) || { panel: {} };
-    let member = Keiko.guilds.get(guid).members.get(uid);
-    if (!member) member = { presence: { clientStatus: '' }, displayHexColor: '#fff', user: { displayAvatarURL: '', tag: '' }, displayName: '' }
-    let uPlatform = member.presence.clientStatus;
-    if (uPlatform) {
-      if (uPlatform.web) uPlatform = { 'platform': 'stronie', 'status': uPlatform.web }
-      if (uPlatform.mobile) uPlatform = { 'platform': 'telefonie', 'status': uPlatform.mobile }
-      if (uPlatform.desktop) uPlatform = { 'platform': 'komputerze', 'status': uPlatform.desktop }
-      if (uPlatform.web || uPlatform.mobile || uPlatform.desktop) {
-        uPlatform = { 'platform': '¯\\_(ツ)_/¯', status: '¯\\_(ツ)_/¯' }
-      }
-      switch (uPlatform.status) {
-        case 'online':
-          break;
-        case 'idle':
-          uPlatform.status = 'Zaraz wracam';
-          break;
-        case 'undefined':
-          uPlatform.status = 'Niewidoczny';
-          break;
-        case 'dnd':
-          uPlatform.status = 'd-n-d';
-          break;
-      }
-    } else uPlatform = { 'platform': '¯\\_(ツ)_/¯', status: '¯\\_(ツ)_/¯' }
-    if (!userData.panel) userData.panel.desc = "";
-    let YuiData = JSON.parse(await httpService.get('https://yui-discord-bot.glitch.me/levels').then(response => response));
-    let dataIndex = YuiData.findIndex(elt => elt.userId == uid);
-    let yuiUserData;
-    if (dataIndex < 0) yuiUserData = null;
-    else {
-      yuiUserData = YuiData[dataIndex];
-      delete yuiUserData.createdAt;
-      delete yuiUserData.updatedAt;
-      delete yuiUserData.userId;
-    }
-    response.send({
-      guid: guid, uid: uid, desc: userData.panel.desc, platform: uPlatform.platform,
-      status: uPlatform.status, yui: yuiUserData, hexcolor: member.displayHexColor, avatar: member.user.displayAvatarURL,
-      name: member.displayName, tag: member.user.tag
-    })
+
+  app.use((req, res, next) => {
+    req.Keiko = Keiko;
+    next()
   })
-  //Keiko.setPresence()
-  let normal = { game: { name: "nowy projekt Indexed", type: "watching" }, status: "online" };
+
+  app.use("/", server)
+
+  let normal = { game: { name: "some killer whale hentai", type: "watching" }, status: "online" };
   let service = { game: { name: "jestem na przeglądzie...", type: "playing" }, status: "idle" };
   Keiko.user.setPresence(normal)
   app.listen(process.env.PORT);
 });
 
 Keiko.on("message", async (msg) => {
+  if (msg.channel.type == "dm") {
+    require('./utils/handlingBattle.js').execute(Keiko, msg)
+  }
   let KeikoGuildMemberName = msg.guild.members.find(member => member.id === '622783718783844356').nickname;
 
   if ((msg.isMemberMentioned(Keiko.user) && !msg.mentions.everyone &&
     (msg.cleanContent === `@${Keiko.user.username}` || msg.cleanContent === `@${KeikoGuildMemberName}`))
     && !msg.author.bot || msg.content.startsWith('keiko!help')) {
-    msg.channel.send(new Keiko.Discord.RichEmbed()
-      .setTitle('Lista wszystkich komend! Prefix `keiko!`')
-      .addField('4fun', '`meme`, `card`, `math')
-      .addField('Inne', '`panel`, `info`, `avatar`, `cc`, `money`, `voting`')
-      .addField('Administracyjne', '`groups`, `perms`, `clear`, `settings`'))
-      .addField("Jeśli chcesz dowiedzieć się czegoś więcej:", "Wpisz help po danej komendzie")
+    let embed = new Keiko.Discord.RichEmbed();
+    embed.setTitle(data.help.title);
+    data.help.data.reduce((sum, acc) => {
+      embed.addField(acc.name, acc.text);
+      return null
+    }, null)
+    msg.channel.send(embed)
     return;
   }
   if (!msg.content.startsWith(prefix.default)) return;
@@ -106,14 +67,10 @@ Keiko.on("message", async (msg) => {
   let command = Keiko.interpenter.readWord() || "niematakiejkomendyjasiu";
   if (Keiko.commands.has(command)) {
     try {
-      if (Keiko.commands.get(command).status == 'off') {
-        msg.channel.send('Ta komenda jest wyłączona!');
-        return;
-      }
-      if (Keiko.commands.get(command).status == 'service')
-        msg.channel.send('Ta komenda jest w trakcie modernizacji i nie które funkcje mogą nie działać!')
-      if (Keiko.commands.get(command).status == 'unstable')
-        msg.channel.send('Ta komenda jest nie stabilna i może w 100% nie działać poprawnie!')
+
+      Keiko.commands.get(command).status != "on" && msg.channel.send(data.status[Keiko.commands.get(command).status])
+      if (Keiko.commands.get(command).status == "off") return;
+
       await Keiko.commands.get(command).execute(Keiko, msg);
     } catch (err) {
       msg.reply(`jakiś błądek... Zobacz składnie komendy! Szczegóły: ${err}`);

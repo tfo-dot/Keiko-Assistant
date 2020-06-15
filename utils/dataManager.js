@@ -59,4 +59,19 @@ class PDataManager {
     }
 }
 
-module.exports = { 'GDataManager': GDataManager, 'UDataManager': UDataManager, 'GrDataManager': GrDataManager, 'PDataManager': PDataManager };
+class BattleManager {
+    constructor() {
+        this.data = JSON.parse(fs.readFileSync("./data/battle.json")).data
+    }
+
+    async update(ndata) {
+        let temp = { "data": ndata }
+        await fs.writeFileSync("./data/battle.json", JSON.stringify(temp));
+        return;
+    }
+    getData() {
+        return this.data;
+    }
+}
+
+module.exports = { GDataManager, UDataManager, GrDataManager, PDataManager, BattleManager };
