@@ -33,9 +33,6 @@ Keiko.on("ready", () => {
 });
 
 Keiko.on("message", async (msg) => {
-  if (msg.channel.type == "dm") {
-    require('./utils/handlingBattle.js').execute(Keiko, msg)
-  }
   let KeikoGuildMemberName = msg.guild.members.find(member => member.id === '622783718783844356').nickname;
 
   if ((msg.isMemberMentioned(Keiko.user) && !msg.mentions.everyone &&
