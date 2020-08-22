@@ -1,8 +1,3 @@
-const fs = require('fs'), StringReader = require('../stringReader.js'), Canvas = require('canvas'),
-    https = require('https'), httpService = require('../httpService.js'), GIFEncoder = require('gifencoder'),
-    dataManager = require('./../utils/dataManager.js')
-
-let safeEval = require('safe-eval')
 let fibonacciTab = []; fibonacciTab["0"] = 0; fibonacciTab["1"] = 1;
 
 module.exports = {
@@ -41,21 +36,11 @@ module.exports = {
                 }
                 let rup = Math.round(sub[0]), rdown = Math.floor(sub[1])
                 msg.channel.send(`Liczba \`${sub[0]}\`, zaokrąglona w góre daje \`${rup}\`. Natomiast w dół \`${rdown}\``)
-            /*case 'calc':
-                sub.push(Keiko.interpenter.getRemaing())
-                if (!sub[0]) {
-                    msg.channel.send('Wiesz... Ale co ja ci mam wyliczyć? Podaj mi działanie!')
-                    return;
-                }
-                msg.channel.send(new Keiko.Discord.RichEmbed().setTitle('Output komendy `math calc`').addField('Działanie:', sub[0])
-                    .addField('Wynik:', safeEval(sub[0])))
-                break;*/
             default:
                 msg.channel.send(new Keiko.Discord.RichEmbed().setTitle('Opcje komendy `math`').addField('Dostępne:',
                     `> fibonacci <miejsce> - Oblicza miejsce w ciagu fibonacciego!
                 > dzielniki <liczba> - Pokazuje wszystkie dzielniki liczby!
                 > round <liczba> - Zaokrąglam liczbę!`))
-                //> calc <działanie> - Obliczam zadane działanie!`))
         }
     }
 }

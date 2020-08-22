@@ -1,5 +1,4 @@
-const fs = require('fs'), StringReader = require('../stringReader.js'), Canvas = require('canvas'),
-    https = require('https'), httpService = require('../httpService.js'), utils = require('./../utils/others.js');
+const httpService = require('../httpService.js'), utils = require('./../utils/others.js');
 
 module.exports = {
     name: 'booru',

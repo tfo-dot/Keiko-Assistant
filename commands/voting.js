@@ -1,7 +1,3 @@
-const fs = require('fs'), StringReader = require('../stringReader.js'), Canvas = require('canvas'),
-    https = require('https'), httpService = require('../httpService.js'), GIFEncoder = require('gifencoder'),
-    { GrDataManager, PDataManager } = require('./../utils/dataManager.js'), utils = require('./../utils/others.js')
-
 module.exports = {
     name: 'voting',
     description: 'Robię głosowanko!',

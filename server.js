@@ -1,13 +1,6 @@
 const express = require('express'), fs = require('fs'), StringReader = require('./stringReader.js'),
-  Canvas = require('canvas'), https = require('https'), { UDataManager } = require('./utils/dataManager.js'),
-  httpService = require('./httpService.js'), server = require("./router.js"), data = require('./data.js');
+  server = require("./router.js"), data = require('./data.js');
 let app = express();
-
-setInterval(() => {
-  https.get(`https://${process.env.PROJECT_DOMAIN}.glitch.me/`);
-  https.get('https://yui-discord-bot.glitch.me/');
-  https.get('https://discord-inbase.glitch.me/ultramegawchujsecretdoodpaleniabota')
-}, 250000);
 
 //Discord
 const Discord = require('discord.js');

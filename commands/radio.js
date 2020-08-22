@@ -1,6 +1,3 @@
-const fs = require('fs'), StringReader = require('../stringReader.js'), Canvas = require('canvas'),
-    https = require('https'), httpService = require('../httpService.js');
-
 module.exports = {
     name: 'radio',
     description: 'Radio.exe',

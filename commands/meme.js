@@ -1,5 +1,4 @@
-const fs = require('fs'), StringReader = require('../stringReader.js'), Canvas = require('canvas'),
-    https = require('https'), httpService = require('../httpService.js'), GIFEncoder = require('gifencoder');
+const Canvas = require('canvas'), GIFEncoder = require('gifencoder');
 
 module.exports = {
     name: 'meme',

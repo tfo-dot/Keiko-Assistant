@@ -6,7 +6,7 @@ let status = {
 let help = {
     title: 'Lista wszystkich komend! Prefix `keiko!`',
     data: [
-        { name: '4fun', text: '`meme`, `card`, `math`, `booru' },
+        { name: '4fun', text: '`meme`, `card`, `math`, `booru`' },
         { name: 'Inne', text: '`panel`, `info`, `avatar`, `cc`, `money`, `voting`' },
         { name: 'Administracyjne', text: '`groups`, `perms`, `clear`, `settings`' },
         { name: "Developerskie", text: '`font`' },
