@@ -16,11 +16,6 @@ fs.readdirSync('./commands').filter(file => file.endsWith('.js')).forEach(file =
   Keiko.commands.set(command.name, command);
 })
 
-fs.readdirSync('./events').filter(file => file.endsWith('.js')).forEach(file => {
-  const command = require(`./events/${file}`)
-  Keiko.on(command.event, command.execute)
-})
-
 Keiko.on("ready", () => {
   console.log("Started & synced");
 
