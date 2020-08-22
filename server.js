@@ -2,7 +2,7 @@ const express = require('express'), fs = require('fs'), StringReader = require('
   server = require("./router.js"), data = require('./data.js'), https = require('https');
 let app = express();
 
-setTimeout(() -> {
+setInterval(() -> {
    https.get("https://keiko-assistant.herokuapp.com/")
 }, 5 * 60 * 1000)
 
