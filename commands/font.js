@@ -11,8 +11,7 @@ module.exports = {
         let helpWord = Keiko.interpenter.readWord()
         if (helpWord == "help") {
             msg.channel.send(embed.addField("Użycie komendy:", `\`keiko!font [nazwa]\``)
-                .addField("Ogólny opis:", "Informacje odnośnie wybranej czcionki lub całego zbioru")
-                .addField("Permisje:", "Żadne, do wywołania tej komendy nie są potrzebne żadne specjalne uprawnienia"))
+                .addField("Ogólny opis:", "Informacje odnośnie wybranej czcionki lub całego zbioru"))
             return
         }
         if (helpWord) Keiko.interpenter.moveByInt(-helpWord.length);

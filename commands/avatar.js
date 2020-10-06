@@ -10,8 +10,7 @@ module.exports = {
         if (helpWord == "help") {
             msg.channel.send(embed.addField("Użycie komendy:", `\`keiko!avatar\``)
                 .addField("Ogólny opis:", "Pokazuje twój avatar lub kogoś innego")
-                .addField("Dodatkowe informacje:", `Zamiast oznaczać użytkownika możesz po prostu wpisać jego id na przykład moje to ${Keiko.user.id}`)
-                .addField("Permisje:", "Żadne, do wywołania tej komendy nie są potrzebne żadne specjalne uprawnienia"))
+                .addField("Dodatkowe informacje:", `Zamiast oznaczać użytkownika możesz po prostu wpisać jego id na przykład moje to ${Keiko.user.id}`))
             return
         }
         if (helpWord) Keiko.interpenter.moveByInt(-helpWord.length);
@@ -22,8 +21,7 @@ module.exports = {
                 Keiko.interpenter.moveByInt(-id.length);
             } else user = msg.author;
         } else user = msg.mentions.users.first();
-        embed.addField(user.tag, `[Zobacz tutaj](${user.avatarURL})`).setImage(user.avatarURL)
-        msg.channel.send(embed)
+        msg.channel.send(embed.addField(user.tag, `[Zobacz tutaj](${user.avatarURL})`).setImage(user.avatarURL))
         return;
     }
 }

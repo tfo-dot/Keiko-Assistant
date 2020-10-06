@@ -10,8 +10,7 @@ module.exports = {
         if (helpWord == "help") {
             msg.channel.send(embed.addField("Użycie komendy:", `\`keiko!radio [czynność]\``)
                 .addField("Ogólny opis:", "Bawie się radiem!")
-                .addField("Dodatkowe informacje:", `Moim ulubionym radiem jest Radio Wrocław!`)
-                .addField("Permisje:", "Żadne, do wywołania tej komendy nie są potrzebne żadne specjalne uprawnienia"))
+                .addField("Dodatkowe informacje:", `Moim ulubionym radiem jest Radio Wrocław!`))
             return
         }
         if (helpWord) Keiko.interpenter.moveByInt(-helpWord.length);

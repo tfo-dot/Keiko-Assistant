@@ -12,8 +12,7 @@ module.exports = {
         if (helpWord == "help") {
             msg.channel.send(embed.addField("Użycie komendy:", `\`keiko!booru [tagi]\``)
                 .addField("Ogólny opis:", "Pokazuje losowy obrazek z wybranym tagiem")
-                .addField("Dodatkowe informacje:", "Do tej komendy potrzebny jest kanał nsfw")
-                .addField("Permisje:", "Żadne, do wywołania tej komendy nie są potrzebne żadne specjalne uprawnienia"))
+                .addField("Dodatkowe informacje:", "Do tej komendy potrzebny jest kanał nsfw"))
             return
         }
         if (helpWord) Keiko.interpenter.moveByInt(-helpWord.length);
