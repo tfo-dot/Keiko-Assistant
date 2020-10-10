@@ -23,7 +23,8 @@ module.exports = {
                     msg.channel.send("Brak mi procencików")
                     return
                 }
-                msg.channel.send(new Keiko.Discord.RichEmbed().setTitle('Procenciki').addField(`${sub[1]}% z liczby ${sub[0]}`, (sub[0] * sub[1]) / 100))
+                msg.channel.send(new Keiko.Discord.RichEmbed().setTitle('Procenciki')
+                    .addField(`${sub[1]}% z liczby ${sub[0]}`, (sub[0] * sub[1]) / 100))
                 break;
             case 'fibonacci':
                 sub.push(Math.abs(Keiko.interpenter.readInt()) + 1)
@@ -50,8 +51,9 @@ module.exports = {
                     msg.channel.send('Jeszcze nie zgłupiałam na tyle żeby 0 zaokrąglić...!')
                     return;
                 }
-                let rup = Math.round(sub[0]), rdown = Math.floor(sub[1])
+                let rup = Math.round(sub[0]), rdown = Math.floor(sub[0])
                 msg.channel.send(`Liczba \`${sub[0]}\`, zaokrąglona w góre daje \`${rup}\`. Natomiast w dół \`${rdown}\``)
+                break;
             case 'random':
                 sub.push(Keiko.interpenter.readPoint())
                 if (!sub[0]) {
@@ -59,9 +61,8 @@ module.exports = {
                     return
                 }
                 sub.push(Keiko.interpenter.readPoint())
-                if (!sub[1]) sub[1] = 1
+                if (!sub[1]) sub[1] = 0
                 msg.channel.send(new Keiko.Discord.RichEmbed().setTitle('Losowańsko').addField(`Randomowa liczba z przedziału ${sub[1]} - ${sub[0]}`, utils.genRandom(sub[1], sub[0])))
-                break;
                 break;
             default:
                 msg.channel.send(new Keiko.Discord.RichEmbed().setTitle('Opcje komendy `math`').addField('Dostępne:',
