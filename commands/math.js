@@ -9,6 +9,20 @@ module.exports = {
     execute: async (Keiko, msg) => {
         let command = Keiko.interpenter.readWord(), sub = [];
         switch (command) {
+            case 'percent':
+            case '%':
+                sub.push(Keiko.interpenter.readPoint())
+                if(!sub[0]) {
+                    msg.channel.send("Brak mi liczby z której mam liczyć")
+                    return
+                }
+                sub.push(Keiko.interpenter.readPoint())
+                if(!sub[1]) {
+                    msg.channel.send("Brak mi procencików")
+                    return
+                }
+                msg.channel.send(new Keiko.Discord.RichEmbed().setTitle('Procenciki').addField(`${sub[1]}% z liczby ${sub[0]}`, (sub[0] * sub[1]) / 100))
+                break;
             case 'fibonacci':
                 sub.push(Math.abs(Keiko.interpenter.readInt()) + 1)
                 if (!sub[0]) {
@@ -40,7 +54,8 @@ module.exports = {
                 msg.channel.send(new Keiko.Discord.RichEmbed().setTitle('Opcje komendy `math`').addField('Dostępne:',
                     `> fibonacci <miejsce> - Oblicza miejsce w ciagu fibonacciego!
                 > dzielniki <liczba> - Pokazuje wszystkie dzielniki liczby!
-                > round <liczba> - Zaokrąglam liczbę!`))
+                > round <liczba> - Zaokrąglam liczbę!
+                > percent <liczba> <procent> - Liczy procent określonej liczby alias: \`%\``))
         }
     }
 }

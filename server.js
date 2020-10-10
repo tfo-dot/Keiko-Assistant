@@ -19,9 +19,9 @@ Keiko.on("message", async (msg) => {
     return msg.channel.send(makeHelp());
 
   if (!msg.content.startsWith("keiko!")) return;
-  Keiko.interpenter = new StringReader(msg.content.substring("keiko!".length));
-  cmdName = Keiko.interpenter.readWord()
-  if (Keiko.commands.has(cmdName || "niematakiejkomendyjasiu")) {
+  Keiko.interpenter = new StringReader(msg.content.substring(6));
+  var cmdName = Keiko.interpenter.readWord() || "niematakiejkomendyjasiu"
+  if (Keiko.commands.has(cmdName)) {
     try {
       let command = Keiko.commands.get(cmdName)
 
