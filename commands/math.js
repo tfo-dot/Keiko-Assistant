@@ -1,5 +1,7 @@
 let fibonacciTab = []; fibonacciTab["0"] = 0; fibonacciTab["1"] = 1;
 
+const utils = require("./../utils/others.js")
+
 module.exports = {
     name: 'math',
     description: 'Pokazuje ciekawe matematyczne zadania!',
@@ -12,12 +14,12 @@ module.exports = {
             case 'percent':
             case '%':
                 sub.push(Keiko.interpenter.readPoint())
-                if(!sub[0]) {
+                if (!sub[0]) {
                     msg.channel.send("Brak mi liczby z której mam liczyć")
                     return
                 }
                 sub.push(Keiko.interpenter.readPoint())
-                if(!sub[1]) {
+                if (!sub[1]) {
                     msg.channel.send("Brak mi procencików")
                     return
                 }
@@ -50,11 +52,23 @@ module.exports = {
                 }
                 let rup = Math.round(sub[0]), rdown = Math.floor(sub[1])
                 msg.channel.send(`Liczba \`${sub[0]}\`, zaokrąglona w góre daje \`${rup}\`. Natomiast w dół \`${rdown}\``)
+            case 'random':
+                sub.push(Keiko.interpenter.readPoint())
+                if (!sub[0]) {
+                    msg.channel.send("Brak mi maksymalnej liczby")
+                    return
+                }
+                sub.push(Keiko.interpenter.readPoint())
+                if (!sub[1]) sub[1] = 1
+                msg.channel.send(new Keiko.Discord.RichEmbed().setTitle('Losowańsko').addField(`Randomowa liczba z przedziału ${sub[1]} - ${sub[0]}`, utils.genRandom(sub[1], sub[0])))
+                break;
+                break;
             default:
                 msg.channel.send(new Keiko.Discord.RichEmbed().setTitle('Opcje komendy `math`').addField('Dostępne:',
                     `> fibonacci <miejsce> - Oblicza miejsce w ciagu fibonacciego!
                 > dzielniki <liczba> - Pokazuje wszystkie dzielniki liczby!
                 > round <liczba> - Zaokrąglam liczbę!
+                > random <max> [min] - Losuję liczbe z przedziału (jeśli nie podasz min wezme 1)
                 > percent <liczba> <procent> - Liczy procent określonej liczby alias: \`%\``))
         }
     }
