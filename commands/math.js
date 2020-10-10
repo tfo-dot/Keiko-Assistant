@@ -1,4 +1,4 @@
-let fibonacciTab = []; fibonacciTab["0"] = 0; fibonacciTab["1"] = 1;
+let fibonacciTab = [];
 
 const utils = require("./../utils/others.js")
 
@@ -76,7 +76,7 @@ module.exports = {
 }
 
 function fibonacci(num) {
-    if (num == 0 || num == 1) return fibonacciTab[`${num}`]
+    if (num == 0 || num == 1) return num
     else {
         if (!fibonacciTab[`${num}`]) {
             fibonacciTab[`${num}`] = fibonacci(num - 1) + fibonacci(num - 2)
