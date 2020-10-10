@@ -2,7 +2,7 @@ module.exports = {
     name: 'radio',
     description: 'Radio.exe',
     aliases: [],
-    status: 'on',
+    status: 'unstable',
     package: "default",
     execute: async (Keiko, msg) => {
         let embed = new Keiko.Discord.RichEmbed().setTitle('No siemka'), sub = [];
