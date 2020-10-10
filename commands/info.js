@@ -11,10 +11,10 @@ module.exports = {
             .addField('Twórcy', `Co prawda wcześniej powiedziałam ci że <@344048874656366592> jest twórcą.
     Prawda jest troszkę odmiennna. Nad moją poprawną pracą czuwa cały skład Indexed®. Więc nie masz się czego martwić! Do mojego rozwoju przynili się głównie:
     > <@651511209585147904> - Tata mojego zmarłego ~~wskrzeszonego~~ już kuzyna, oraz ogromna pomoc!
-    > <@517413285738577950> - Skrypty i niektóre komendy
+    > <@680907935345541219> - Skrypty i niektóre komendy
     > <@344048874656366592> - Twórca`).addField('Pozostałe informacje',
                 `Github: Wkrótce
-                Moja strona: [kliknij tutaj](https://keiko-assistant.glitch.me/)`))
+                Moja strona: [kliknij tutaj](https://keiko-assistant.herokuapp.com/)`))
         return;
     }
 }

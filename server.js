@@ -20,8 +20,10 @@ Keiko.on("message", async (msg) => {
 
   if (!msg.content.startsWith("keiko!")) return;
   Keiko.interpenter = new StringReader(msg.content.substring("keiko!".length));
-  if (Keiko.commands.has(Keiko.interpenter.readWord() || "niematakiejkomendyjasiu")) {
+  cmdName = Keiko.interpenter.readWord()
+  if (Keiko.commands.has(cmdName || "niematakiejkomendyjasiu")) {
     try {
+      let command = Keiko.commands.get(cmdName)
 
       if(command.status!= "on") {
         if (command.status == "off") return;
