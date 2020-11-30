@@ -11,7 +11,7 @@ module.exports = {
         let embed = new Keiko.Discord.RichEmbed().setTitle('No siemka'), sub = [];
         let helpWord = Keiko.interpenter.readWord()
         if (helpWord == "help") {
-            msg.channel.send(embed.addField("Użycie komendy:", `\`keiko!atak <unik> <dmg> <pancerz>\``)
+            msg.channel.send(embed.addField("Użycie komendy:", `\`keiko!unik <unik> <dmg> <pancerz>\``)
                 .addField("Ogólny opis:", "Licze ile dostałeś w tyłek od ataku podstawowego!"))
             return
         }
