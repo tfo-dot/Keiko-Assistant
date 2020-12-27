@@ -22,9 +22,9 @@ module.exports = {
         if (okay > snek) {
             let dmg = sub[0];
             if (sub[1] > 0) dmg = dmg * (100 / (100 + sub[1]))
-            msg.channel.send(embed.addField('Informacje:', `[${okay}] Niestety, unik się nie udał...\n Otrzymałeś od życia ${Math.floor(dmg)} w tyłek`).setColor('RED'))
+            msg.channel.send(embed.addField('Informacje:', `[${Math.floor(okay / 2.5)}] Niestety, unik się nie udał...\n Otrzymałeś od życia ${Math.floor(dmg)} w tyłek`).setColor('RED'))
         } else {
-            msg.channel.send(embed.addField('Informacje:', `[${okay}] Twój unik się udał!`).setColor('GREEN'))
+            msg.channel.send(embed.addField('Informacje:', `[${Math.floor(okay / 2.5)}] Twój unik się udał!`).setColor('GREEN'))
         }
     }
 }
