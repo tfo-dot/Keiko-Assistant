@@ -21,7 +21,7 @@ module.exports = {
         var okay = utils.genRandom(1, 100);
         if (okay > snek) {
             let dmg = sub[0];
-            if (sub[1] > 0 && sub[1] < 100) dmg = dmg * (100 / (100 + sub[1]))
+            if (sub[1] > 0) dmg = dmg * (100 / (100 + sub[1]))
             msg.channel.send(embed.addField('Informacje:', `[${okay}] Niestety, unik się nie udał...\n Otrzymałeś od życia ${Math.floor(dmg)} w tyłek`).setColor('RED'))
         } else {
             msg.channel.send(embed.addField('Informacje:', `[${okay}] Twój unik się udał!`).setColor('GREEN'))
